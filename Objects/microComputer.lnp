@@ -1,0 +1,8 @@
+".\Objects\STARTUP.obj",
+".\Objects\adc.obj",
+".\Objects\control_temperature.obj",
+".\Objects\led_key.obj",
+".\Objects\time.obj",
+".\Objects\main.obj" 
+TO ".\Objects\microComputer" 
+PRINT(".\Listings\microComputer.m51") RAMSIZE(256) 

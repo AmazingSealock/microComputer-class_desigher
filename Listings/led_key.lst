@@ -1,0 +1,172 @@
+C51 COMPILER V9.60.0.0   LED_KEY                                                           12/25/2020 10:26:12 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE LED_KEY
+OBJECT MODULE PLACED IN .\Objects\led_key.obj
+COMPILER INVOKED BY: D:\ACTION\Keil_v5\C51\BIN\C51.EXE led_key.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT
+                    -(.\Listings\led_key.lst) OBJECT(.\Objects\led_key.obj)
+
+line level    source
+
+   1          #include <led_key.h>
+   2          
+   3          unsigned char code2[] = {0x7e,0x30,0x6d,0x79,0x33,0x5b,0x5f,0x70,0x7f,0x7b,0x01,0x80,0x00, 0x6f};
+   4                                                    //  0    1    2    3    4    5    6    7    8    9    -    .   blank error
+   5          
+   6          unsigned char number;
+   7          unsigned char keyFlg = 1;
+   8          
+   9          unsigned int receive_buf[10];
+  10          unsigned char receive_point=0; 
+  11          
+  12          unsigned int ten;//十位
+  13          unsigned char one;//个位
+  14          unsigned long decimal;//小数第一位
+  15          extern   unsigned char number;
+  16          
+  17          void Led_KeyInit(void)
+  18          {
+  19   1              SCON = 0x50;
+  20   1              PCON = 0x00;
+  21   1              AUXR = 0x00;                           //配置T1为波特率发生器
+  22   1              TH1 = 0xFD;
+  23   1              TL1 = 0xFD;                            //波特率9600
+  24   1              TR1 = 1;                               //开启定时器T1
+  25   1      }
+  26          
+  27          int InputTemper(void)
+  28          {
+  29   1              while(1)
+  30   1              {
+  31   2                      number = key_read();
+  32   2                      led_4int_disp(number);
+  33   2                      delay1ms(250);
+  34   2                      if(number != 255) break;
+  35   2              }
+  36   1              return number;
+  37   1      }
+  38          
+  39          void led_4int_disp(int intdata)  
+  40          {
+  41   1              unsigned char Lcd_Data[8];
+  42   1              unsigned char i;
+  43   1              Lcd_Data[0] = 12;
+  44   1              Lcd_Data[1] = 12; 
+  45   1              Lcd_Data[2] = 12;
+  46   1              Lcd_Data[3] = 12;
+  47   1              Lcd_Data[4] = 12; 
+  48   1              Lcd_Data[5] = intdata/100;  intdata = intdata%100;
+  49   1              Lcd_Data[6] = intdata/10;   intdata = intdata%10;
+  50   1              Lcd_Data[7] = intdata/1;
+  51   1              
+  52   1              for(i = 0;i<8;i++)
+  53   1              {
+  54   2                      Lcd_Data[i] = code2[Lcd_Data[i]];
+C51 COMPILER V9.60.0.0   LED_KEY                                                           12/25/2020 10:26:12 PAGE 2   
+
+  55   2              }
+  56   1              
+  57   1              for(i = 0;i<8;i++)  //通过串口发送显示数据，数码管显示
+  58   1              {
+  59   2                      led_write(0x97-i,Lcd_Data[i]);
+  60   2              }
+  61   1              
+  62   1      }
+  63          
+  64          void led_real_disp(float RealData)
+  65          {
+  66   1              float m1; unsigned char Fuhao1; unsigned long Temp; unsigned char LCD_Data[8]; unsigned char i;
+  67   1      
+  68   1              if (RealData<0.0)  { m1 = -1.0*RealData; Fuhao1 = 1; }             //处理正负号
+  69   1              else               { m1 = RealData;      Fuhao1 = 0; }
+  70   1      
+  71   1              if (m1 >= 1000.0)     Temp = (unsigned long) m1;
+  72   1              else if (m1 >= 100.0) Temp = (unsigned long)(m1*10);
+  73   1              else if (m1 >= 10.0)     Temp = (unsigned long)(m1*100);
+  74   1              else                  Temp = (unsigned long)(m1*1000);
+  75   1      
+  76   1              if(Fuhao1 == 0) LCD_Data[3] = 12;   // 正数       
+  77   1              else            LCD_Data[3] = 10;   // 负数
+  78   1      
+  79   1              LCD_Data[4] = (Temp / 1000) % 10; Temp = Temp % 1000;
+  80   1              LCD_Data[5] =  Temp / 100;        Temp = Temp % 100;
+  81   1              LCD_Data[6] =  Temp / 10;         Temp = Temp % 10;
+  82   1              LCD_Data[7] =  Temp / 1;
+  83   1      
+  84   1              for(i = 0; i < 3; i++) { LCD_Data[i] = 0x00;}
+  85   1              for(i = 3; i < 8; i++) { LCD_Data[i] = code2[LCD_Data[i]];}
+  86   1      
+  87   1              if (m1 < 10.0)        LCD_Data[4] = LCD_Data[4] | 0x80;
+  88   1              else if (m1 < 100.0)  LCD_Data[5] = LCD_Data[5] | 0x80;
+  89   1              else if (m1 < 1000.0) LCD_Data[6] = LCD_Data[6] | 0x80;
+  90   1      
+  91   1              for(i = 0; i < 8; i++)
+  92   1              {
+  93   2                      led_write(0x97-i+3, LCD_Data[i]);
+  94   2              }
+  95   1      }
+  96          
+  97          void led_write(unsigned char cmd, unsigned char dta)
+  98          {
+  99   1              send_byte(cmd); send_byte(dta);
+ 100   1      }
+ 101          
+ 102          unsigned char key_read(void)
+ 103          {
+ 104   1              send_byte(0x15); return(receive_byte());
+ 105   1      }
+ 106          
+ 107          void send_byte(unsigned char out_byte)
+ 108          {
+ 109   1              unsigned char i;
+ 110   1              cs = 0; 
+ 111   1              long_delay();
+ 112   1              for (i=0;i<8;i++)
+ 113   1              {
+ 114   2                      if (out_byte & 0x80) { dat = 1; }
+ 115   2                      else { dat = 0; }
+ 116   2                      clk = 1; 
+C51 COMPILER V9.60.0.0   LED_KEY                                                           12/25/2020 10:26:12 PAGE 3   
+
+ 117   2                      short_delay(); 
+ 118   2                      clk = 0; 
+ 119   2                      short_delay(); 
+ 120   2                      out_byte = out_byte*2;
+ 121   2              }
+ 122   1              dat = 0;
+ 123   1      }
+ 124          
+ 125          unsigned char receive_byte(void)
+ 126          {
+ 127   1              unsigned char i, in_byte;
+ 128   1      
+ 129   1              dat = 1; long_delay();
+ 130   1              for (i=0;i<8;i++)
+ 131   1              {
+ 132   2                      clk = 1; 
+ 133   2                      short_delay(); 
+ 134   2                      in_byte = in_byte*2;
+ 135   2                      if (dat) 
+ 136   2                      { 
+ 137   3                              in_byte = in_byte|0x01; 
+ 138   3                      }
+ 139   2                      clk = 0; 
+ 140   2                      short_delay();
+ 141   2              }
+ 142   1              dat = 0; return(in_byte);
+ 143   1      }
+ 144          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1110    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     44      36
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

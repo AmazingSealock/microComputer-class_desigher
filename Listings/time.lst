@@ -1,0 +1,99 @@
+C51 COMPILER V9.60.0.0   TIME                                                              12/25/2020 10:26:12 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE TIME
+OBJECT MODULE PLACED IN .\Objects\time.obj
+COMPILER INVOKED BY: D:\ACTION\Keil_v5\C51\BIN\C51.EXE time.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\
+                    -Listings\time.lst) OBJECT(.\Objects\time.obj)
+
+line level    source
+
+   1          #include <time.h>
+   2          
+   3          unsigned int count;
+   4          unsigned int temperCnt;
+   5          unsigned int delayCnt;
+   6          unsigned int resetFlg = 0;
+   7          unsigned int Goflag;
+   8          
+   9          
+  10          void TIM0Init(void)
+  11          {
+  12   1              IE = 0x83;
+  13   1              TMOD = 0x21;  
+  14   1              TH0 = 0xD8;
+  15   1              TL0 = 0xF0;               
+  16   1              TR0  = 1;
+  17   1      }
+  18                  
+  19          void time0() interrupt 1         //10ms¶¨Ê±ÖÐ¶Ï
+  20          {
+  21   1          TH0 = 0xD8;
+  22   1              TL0 = 0xF0;  
+  23   1              count++;
+  24   1              delayCnt++;
+  25   1              temperCnt++;
+  26   1              Goflag = 1;
+  27   1      }
+  28          
+  29          void INT0Interrupt0() interrupt 0
+  30          {
+  31   1              resetFlg = 1;
+  32   1      }
+  33          
+  34          void delay1ms(unsigned char time)
+  35          {
+  36   1              unsigned char i; unsigned int j;
+  37   1              for (i=0;i<time;i++)
+  38   1              {
+  39   2                      for(j=0;j<355;j++){;}
+  40   2              }
+  41   1      }
+  42             
+  43          void long_delay(void)
+  44          {
+  45   1              unsigned char i;
+  46   1              for (i=0;i<0x30;i++){;}
+  47   1      }
+  48          
+  49          void short_delay(void)
+  50          {
+  51   1              unsigned char i;
+  52   1              for (i=0;i<8;i++){;}
+  53   1      }
+  54             
+C51 COMPILER V9.60.0.0   TIME                                                              12/25/2020 10:26:12 PAGE 2   
+
+  55          void delay_10ms(unsigned int time)
+  56          {
+  57   1              count = 0;
+  58   1          while(count < time);
+  59   1      
+  60   1      }  
+  61          
+  62          void delay(int ms)        //1 ms
+  63          {
+  64   1              unsigned int j, g;
+  65   1              for(j = 0; j < ms; j++)
+  66   1              {                        
+  67   2                      for(g = 0; g < 335; g++)
+  68   2                      {
+  69   3                              _nop_(); _nop_(); _nop_(); _nop_(); 
+  70   3                      }
+  71   2              }
+  72   1      }
+  73          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    219    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     10    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
