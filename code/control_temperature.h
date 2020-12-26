@@ -9,8 +9,8 @@ sbit     P21        =  P2^1;
 sbit     P22        =  P2^2;
 sbit     P23        =  P2^3;
 
-void conTemInit(void);
-void coldDown(void);
-void warmUp(void);
+void conTemInit(void);	//初始化将风扇和加热电阻开关断开
+void coldDown(void);	//打开风扇开关，关闭加热电阻
+void warmUp(void);		//打开加热电阻开关，关闭风扇
 
 #endif 

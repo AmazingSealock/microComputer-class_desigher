@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   LED_KEY                                                           12/25/2020 10:26:12 PAGE 1   
+C51 COMPILER V9.60.0.0   LED_KEY                                                           12/26/2020 20:48:58 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE LED_KEY
@@ -62,7 +62,7 @@ line level    source
   52   1              for(i = 0;i<8;i++)
   53   1              {
   54   2                      Lcd_Data[i] = code2[Lcd_Data[i]];
-C51 COMPILER V9.60.0.0   LED_KEY                                                           12/25/2020 10:26:12 PAGE 2   
+C51 COMPILER V9.60.0.0   LED_KEY                                                           12/26/2020 20:48:58 PAGE 2   
 
   55   2              }
   56   1              
@@ -126,7 +126,7 @@ line level    source
  114   2                      if (out_byte & 0x80) { dat = 1; }
  115   2                      else { dat = 0; }
  116   2                      clk = 1; 
-C51 COMPILER V9.60.0.0   LED_KEY                                                           12/25/2020 10:26:12 PAGE 3   
+C51 COMPILER V9.60.0.0   LED_KEY                                                           12/26/2020 20:48:58 PAGE 3   
 
  117   2                      short_delay(); 
  118   2                      clk = 0; 

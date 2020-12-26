@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.0.0   ADC                                                               12/25/2020 10:26:12 PAGE 1   
+C51 COMPILER V9.60.0.0   ADC                                                               12/26/2020 20:48:58 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE ADC
@@ -62,7 +62,7 @@ line level    source
   51   1              tempp = read_w(0x0e); 
   52   1              temp1 = read_w(0x16); 
   53   1              temp2 = read_w(0x18);
-C51 COMPILER V9.60.0.0   ADC                                                               12/25/2020 10:26:12 PAGE 2   
+C51 COMPILER V9.60.0.0   ADC                                                               12/26/2020 20:48:58 PAGE 2   
 
   54   1      
   55   1      }
@@ -126,7 +126,7 @@ line level    source
  113   3                              {
  114   4                                      temp = A1out * 1.00 / 107.0950469;        //26.78272514, 4-20mA,0-20mA
  115   4                              }
-C51 COMPILER V9.60.0.0   ADC                                                               12/25/2020 10:26:12 PAGE 3   
+C51 COMPILER V9.60.0.0   ADC                                                               12/26/2020 20:48:58 PAGE 3   
 
  116   3                              else if  (y == 3)            
  117   3                              {
@@ -190,7 +190,7 @@ line level    source
  175   2              }
  176   1              CLK = 0;
  177   1      }
-C51 COMPILER V9.60.0.0   ADC                                                               12/25/2020 10:26:12 PAGE 4   
+C51 COMPILER V9.60.0.0   ADC                                                               12/26/2020 20:48:58 PAGE 4   
 
  178          
  179          unsigned char inb()         
@@ -254,7 +254,7 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-C51 COMPILER V9.60.0.0   ADC                                                               12/25/2020 10:26:12 PAGE 5   
+C51 COMPILER V9.60.0.0   ADC                                                               12/26/2020 20:48:58 PAGE 5   
 
    CODE SIZE        =   2317    ----
    CONSTANT SIZE    =   3722    ----

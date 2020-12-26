@@ -28,14 +28,13 @@ sfr      CLK_DIV    =  0x97;
 
 
 
-int	 	 GetTemper(int temper);
-void 	 readTemper(void);
-void     outb(unsigned char dat);
+int	 	 GetTemper(int temper);							//获得温度函数
+void 	 readTemper(void);								
+void     outb(unsigned char dat);						
 void     wRIte_w(unsigned char cmd, unsigned long val);
-void     CS5550Init();
-void     datadealt();
-void     init_time0();
-float    couple_liner(unsigned char ch,float dat);
+void     CS5550Init();									//初始化函数		
+void     datadealt();									//处理数据
+float    couple_liner(unsigned char ch,float dat);		//热电偶曲线函数
 unsigned char    inb(void);
 unsigned long    read_w(unsigned char cmd);
  							   
